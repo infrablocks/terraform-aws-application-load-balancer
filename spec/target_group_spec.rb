@@ -7,13 +7,13 @@ describe 'Target Group' do
   let(:name) {output_for(:harness, 'target_group_name')}
   let(:arn) {output_for(:harness, 'target_group_arn')}
   let(:vpc) {output_for(:harness, 'vpc_id')}
-  let(:nlb) {output_for(:harness, 'name')}
+  let(:alb) {output_for(:harness, 'name')}
 
-  subject {nlb_target_group(name)}
+  subject {alb_target_group(name)}
 
   it {should exist}
 
-  # it { should belong_to_nlb(nlb) }
+  # it { should belong_to_alb(alb) }
   it {should belong_to_vpc(vpc)}
 
   its(:protocol) {should eq vars.target_group_protocol}

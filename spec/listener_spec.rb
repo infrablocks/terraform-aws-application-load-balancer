@@ -7,7 +7,7 @@ describe 'Listener' do
   let(:listener) {output_for(:harness, 'listener_arn')}
   let(:certificate) {output_for(:prerequisites, 'certificate_arn')}
 
-  subject {nlb_listener(listener)}
+  subject {alb_listener(listener)}
 
   it {should exist}
   its(:port) {should eq vars.listener_port.to_i}

@@ -1,17 +1,17 @@
-Terraform AWS Network Load Balancer
+Terraform AWS Application Load Balancer
 ===================================
 
-[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-network-load-balancer.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-network-load-balancer)
+[![CircleCI](https://circleci.com/gh/infrablocks/terraform-aws-application-load-balancer.svg?style=svg)](https://circleci.com/gh/infrablocks/terraform-aws-application-load-balancer)
 
-A Terraform module for building a network load balancer in AWS.
+A Terraform module for building an application load balancer in AWS.
 
 The load balancer requires:
 * An existing VPC
 * Some existing subnets
 * A domain name and public and private hosted zones
  
-The ECS load balancer consists of:
-* An NLB
+The application load balancer consists of:
+* An ALB
   * Deployed across the provided subnet IDs
   * Either internal or internet-facing as specified
   * With a health check using the specified target
@@ -24,8 +24,6 @@ The ECS load balancer consists of:
   * In the public hosted zone if specified
   * In the private hosted zone if specified
 
-![Diagram of infrastructure managed by this module](https://raw.githubusercontent.com/infrablocks/terraform-aws-network-load-balancer/master/docs/architecture.png)
-
 Usage
 -----
 
@@ -33,9 +31,9 @@ To use the module, include something like the following in your terraform
 configuration:
 
 ```hcl-terraform
-module "network_load_balancer" {
-  source  = "infrablocks/network-load-balancer/aws"
-  version = "0.1.7"
+module "application_load_balancer" {
+  source  = "infrablocks/application-load-balancer/aws"
+  version = "0.1.0"
 
   region = "eu-west-2"
   vpc_id = "vpc-fb7dc365"
@@ -113,7 +111,7 @@ for usage instructions.
 |----------------------------------|-------------------------------------------------------------------------------|:-------------------:|:------------------------------------:|
 |region| The region into which to deploy the load balancer|-| yes|
 |vpc_id| The ID of the VPC into which to deploy the load balancer	|-| yes|
-|subnet_ids| The IDs of the subnets for the NLB	 |-| yes|
+|subnet_ids| The IDs of the subnets for the ALB	 |-| yes|
 |component| The component for which the load balancer is being created	|-| yes|
 |deployment_identifier| An identifier for this instantiation	|-| yes|
 |domain_name|The domain name of the supplied Route 53 zones    |-| yes|
@@ -123,7 +121,7 @@ for usage instructions.
 |idle_timeout| The time after which idle connections are closed.|60| no|
 |include_public_dns_record| Whether or not to create a public DNS entry (\"yes\" or \"no\").|no| no|
 |include_private_dns_record| Whether or not to create a private DNS entry (\"yes\" or \"no\").|yes| no|
-|expose_to_public_internet| Whether or not to the NLB should be internet facing (\"yes\" or \"no\").|no| no|
+|expose_to_public_internet| Whether or not to the ALB should be internet facing (\"yes\" or \"no\").|no| no|
 |use_https| whether or not to use HTTPS|no| no|
 |target_group_port|The port that the application is listening on|-| yes|
 |target_group_type|The type of target that you must specify when registering targets with this target group.|instance| no|
@@ -133,19 +131,19 @@ for usage instructions.
 |health_check_interval|The time between health check attempts in seconds	 |30| no|
 |health_check_unhealthy_threshold| The number of failed health checks before an instance is taken out of service	|2| no|
 |health_check_healthy_threshold| The number of successful health checks before an instance is put into service	|10| no|
-|listener_port| Port that NLB listens on|443| no|
-|listener_protocol| Protocol that the NLB listens on|TLS| no|
+|listener_port| Port that ALB listens on|443| no|
+|listener_protocol| Protocol that the ALB listens on|TLS| no|
 |listener_certificate_arn|certificate ARN to be used by the certificate|-| yes|
 
 ### Outputs
 
 | Name                                    | Description                                               |
 |-----------------------------------------|-----------------------------------------------------------|
-| name                                    | The name of the created NLB                               |
-| arn                                     | The arn of the created NLB                               |
-| zone_id                                 | The zone ID of the created NLB                            |
-| dns_name                                | The DNS name of the created NLB                           |
-| address                                 | The address of the DNS record(s) for the created NLB      |
+| name                                    | The name of the created ALB                               |
+| arn                                     | The arn of the created ALB                               |
+| zone_id                                 | The zone ID of the created ALB                            |
+| dns_name                                | The DNS name of the created ALB                           |
+| address                                 | The address of the DNS record(s) for the created ALB      |
 
 
 Development
@@ -271,7 +269,7 @@ openssl aes-256-cbc \
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/infrablocks/terraform-aws-network-load-balancer. 
+Bug reports and pull requests are welcome on GitHub at https://github.com/infrablocks/terraform-aws-application-load-balancer. 
 This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
 the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 

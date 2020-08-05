@@ -1,40 +1,40 @@
 output "name" {
-  description = "The name of the created NLB."
+  description = "The name of the created ALB."
   value = aws_lb.load_balancer.name
 }
 
 output "vpc_id" {
-  description = "The VPC ID of the created NLB."
+  description = "The VPC ID of the created ALB."
   value = aws_lb.load_balancer.vpc_id
 }
 
 output "id" {
-  description = "The id of the created NLB."
+  description = "The id of the created ALB."
   value = aws_lb.load_balancer.id
 }
 
 output "arn" {
-  description = "The ARN of the created NLB."
+  description = "The ARN of the created ALB."
   value = aws_lb.load_balancer.arn
 }
 
 output "arn_suffix" {
-  description = "The ARN suffix of the created NLB."
+  description = "The ARN suffix of the created ALB."
   value = aws_lb.load_balancer.arn_suffix
 }
 
 output "zone_id" {
-  description = "The zone ID of the created NLB."
+  description = "The zone ID of the created ALB."
   value = aws_lb.load_balancer.zone_id
 }
 
 output "dns_name" {
-  description = "The DNS name of the created NLB."
+  description = "The DNS name of the created ALB."
   value = aws_lb.load_balancer.dns_name
 }
 
 output "address" {
-  description = "The address of the DNS record(s) for the created NLB."
+  description = "The address of the DNS record(s) for the created ALB."
   value = "${var.component}-${var.deployment_identifier}.${var.domain_name}"
 }
 

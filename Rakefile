@@ -36,7 +36,7 @@ RakeSSH.define_key_tasks(
 
 RakeCircleCI.define_project_tasks(
     namespace: :circle_ci,
-    project_slug: 'github/infrablocks/terraform-aws-network-load-balancer'
+    project_slug: 'github/infrablocks/terraform-aws-application-load-balancer'
 ) do |t|
   circle_ci_config =
       YAML.load_file('config/secrets/circle_ci/config.yaml')
@@ -57,7 +57,7 @@ end
 
 RakeGithub.define_repository_tasks(
     namespace: :github,
-    repository: 'infrablocks/terraform-aws-network-load-balancer',
+    repository: 'infrablocks/terraform-aws-application-load-balancer',
 ) do |t|
   github_config =
       YAML.load_file('config/secrets/github/config.yaml')
@@ -73,6 +73,7 @@ end
 
 namespace :pipeline do
   task :prepare => [
+      :'circle_ci:project:follow',
       :'circle_ci:env_vars:ensure',
       :'circle_ci:ssh_keys:ensure',
       :'github:deploy_keys:ensure'

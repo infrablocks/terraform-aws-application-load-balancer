@@ -1,7 +1,7 @@
 resource "aws_lb" "load_balancer" {
-  load_balancer_type = "network"
+  load_balancer_type = "application"
 
-  name = "nlb-${var.component}"
+  name = "alb-${var.component}"
   subnets = var.subnet_ids
 
   internal = var.expose_to_public_internet == "yes" ? false : true
@@ -11,7 +11,7 @@ resource "aws_lb" "load_balancer" {
   idle_timeout = var.idle_timeout
 
   tags = {
-    Name = "nlb-${var.component}-${var.deployment_identifier}"
+    Name = "alb-${var.component}-${var.deployment_identifier}"
     Component = var.component
     DeploymentIdentifier = var.deployment_identifier
   }

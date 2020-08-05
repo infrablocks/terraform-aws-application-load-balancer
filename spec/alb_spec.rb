@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe 'NLB' do
+describe 'ALB' do
   let(:component) {vars.component}
   let(:deployment_identifier) {vars.deployment_identifier}
 
   let(:name) {output_for(:harness, 'name')}
   let(:arn) {output_for(:harness, 'arn')}
 
-  subject {nlb(name)}
+  subject {alb(name)}
 
   it {should exist}
   # its(:subnets) {should contain_exactly(*output_for(:prerequisites, 'subnet_ids').split(','))}
@@ -25,7 +25,7 @@ describe 'NLB' do
     end
 
     it {should include({key: 'Name',
-                        value: "nlb-#{component}-#{deployment_identifier}"})}
+                        value: "alb-#{component}-#{deployment_identifier}"})}
     it {should include({key: 'Component', value: component})}
     it {should include({key: 'DeploymentIdentifier',
                         value: deployment_identifier})}

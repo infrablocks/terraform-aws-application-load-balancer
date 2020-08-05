@@ -7,7 +7,7 @@ variable "vpc_id" {
 }
 
 variable "subnet_ids" {
-  description = "The IDs of the subnets for the NLB."
+  description = "The IDs of the subnets for the ALB."
   type = list(string)
 }
 
@@ -52,7 +52,7 @@ variable "include_private_dns_record" {
 }
 
 variable "expose_to_public_internet" {
-  description = "Whether or not to the NLB should be internet facing (\"yes\" or \"no\")."
+  description = "Whether or not to the ALB should be internet facing (\"yes\" or \"no\")."
   default = "no"
 }
 
