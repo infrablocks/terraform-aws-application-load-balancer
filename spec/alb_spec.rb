@@ -7,13 +7,20 @@ describe 'ALB' do
   let(:name) {output_for(:harness, 'name')}
   let(:arn) {output_for(:harness, 'arn')}
 
+  let(:subnet_ids) do
+    output_for(:prerequisites, 'subnet_ids', parse: true)
+  end
+
   subject {alb(name)}
 
   it {should exist}
-  # its(:subnets) {should contain_exactly(*output_for(:prerequisites, 'subnet_ids').split(','))}
   its(:scheme) {should eq('internal')}
 
-  # its(:canonical_hosted_zone_name_id) {should eq output_for(:harness, 'zone_id')}
+  it 'has the correct subnets' do
+    subnet_ids.each do |subnet|
+      expect(subject).to(have_subnet(subnet))
+    end
+  end
 
   context 'tags' do
     subject do
@@ -42,18 +49,14 @@ describe 'ALB' do
 
     let(:cross_zone_enabled) { vars.enable_cross_zone_load_balancing == 'no' }
 
-    it 'uses the provided flag for cross zone load balancing' do
-      expect(subject['load_balancing.cross_zone.enabled']).to eq('false')
-    end
-
-    it 'uses the provided flag for cross zone load balancing' do
+    it 'uses the provided flag for whether s3 access logs are enabled' do
       expect(subject['access_logs.s3.enabled']).to eq('false')
     end
-    it 'uses the provided flag for cross zone load balancing' do
+    it 'uses the provided value for the s3 access logs prefix' do
       expect(subject['access_logs.s3.prefix']).to eq('')
     end
 
-    it 'uses the provided flag for cross zone load balancing' do
+    it 'uses the provided flag for whether deletion protection is enabled' do
       expect(subject['deletion_protection.enabled']).to eq('false')
     end
   end

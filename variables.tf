@@ -31,11 +31,6 @@ variable "deployment_identifier" {
   description = "An identifier for this instantiation."
 }
 
-variable "enable_cross_zone_load_balancing" {
-  description = "Whether or not to enable cross zone load balancing (\"yes\" or \"no\")."
-  default = "no"
-}
-
 variable "idle_timeout" {
   description = "The time after which idle connections are closed."
   default = 60
@@ -56,11 +51,6 @@ variable "expose_to_public_internet" {
   default = "no"
 }
 
-variable "use_https" {
-  description = "wheter or not to use HTTPS"
-  default = "no"
-}
-
 variable "target_group_port" {
   description = "The port that the application is listening on"
 }
@@ -71,8 +61,8 @@ variable "target_group_type" {
 }
 
 variable "target_group_protocol" {
-  description = "The protocol to use for routing traffic to the targets. Should be either TCP or TLS, defaults to TCP"
-  default = "TCP"
+  description = "The protocol to use for routing traffic to the targets. Should be either HTTP or HTTPS, defaults to HTTP"
+  default = "HTTP"
 }
 
 variable "health_check_port" {
@@ -81,8 +71,8 @@ variable "health_check_port" {
 }
 
 variable "health_check_protocol" {
-  description = "The protocol to use to connect with the target. Defaults to TCP"
-  default = "TCP"
+  description = "The protocol to use to connect with the target. Defaults to HTTP"
+  default = "HTTP"
 }
 
 variable "health_check_interval" {
@@ -106,8 +96,8 @@ variable "listener_port" {
 }
 
 variable "listener_protocol" {
-  description = "The protocol for connections from clients to the load balancer. Either TCP or TLS"
-  default = "TLS"
+  description = "The protocol for connections from clients to the load balancer. Either HTTP or HTTPS"
+  default = "HTTPS"
 }
 
 variable "listener_certificate_arn" {

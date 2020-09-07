@@ -13,7 +13,7 @@ describe 'Target Group' do
 
   it {should exist}
 
-  # it { should belong_to_alb(alb) }
+  it { should belong_to_alb(alb) }
   it {should belong_to_vpc(vpc)}
 
   its(:protocol) {should eq vars.target_group_protocol}

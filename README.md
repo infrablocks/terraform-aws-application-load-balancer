@@ -125,14 +125,14 @@ for usage instructions.
 |use_https| whether or not to use HTTPS|no| no|
 |target_group_port|The port that the application is listening on|-| yes|
 |target_group_type|The type of target that you must specify when registering targets with this target group.|instance| no|
-|target_group_protocol| The protocol to use for routing traffic to the targets. Should be either TCP or TLS|TCP| no|
+|target_group_protocol| The protocol to use for routing traffic to the targets. Should be either HTTP or HTTPS|HTTP| no|
 |health_check_port|The port to use to connect with the target. Either ports 1-65536, or traffic-port|traffic-port|no|
-|health_check_protocol| The protocol to use for health checks	|TLS| no|
+|health_check_protocol| The protocol to use for health checks	|HTTP| no|
 |health_check_interval|The time between health check attempts in seconds	 |30| no|
 |health_check_unhealthy_threshold| The number of failed health checks before an instance is taken out of service	|2| no|
 |health_check_healthy_threshold| The number of successful health checks before an instance is put into service	|10| no|
 |listener_port| Port that ALB listens on|443| no|
-|listener_protocol| Protocol that the ALB listens on|TLS| no|
+|listener_protocol| Protocol that the ALB listens on|HTTPS| no|
 |listener_certificate_arn|certificate ARN to be used by the certificate|-| yes|
 
 ### Outputs

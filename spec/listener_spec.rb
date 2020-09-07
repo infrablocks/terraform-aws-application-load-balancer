@@ -12,5 +12,11 @@ describe 'Listener' do
   it {should exist}
   its(:port) {should eq vars.listener_port.to_i}
   its(:protocol) {should eq vars.listener_protocol}
-  # its(:certificates) {should eq certificate}
+
+  it 'uses the provided certificate' do
+    certificates = subject.certificates
+
+    expect(certificates.length).to(eq(1))
+    expect(certificates.first.certificate_arn).to(eq(certificate))
+  end
 end

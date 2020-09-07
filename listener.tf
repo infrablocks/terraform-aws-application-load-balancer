@@ -1,5 +1,6 @@
 resource "aws_lb_listener" "load_balancer_listener" {
   load_balancer_arn = aws_lb.load_balancer.arn
+
   port = var.listener_port
   protocol = var.listener_protocol
 

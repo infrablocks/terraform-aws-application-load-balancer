@@ -12,15 +12,12 @@ vars:
   public_zone_id: "%{hiera('public_zone_id')}"
   private_zone_id: "%{hiera('private_zone_id')}"
 
-  enable_cross_zone_load_balancing: "%{hiera('enable_cross_zone_load_balancing')}"
-
   idle_timeout: "%{hiera('idle_timeout')}"
 
   include_public_dns_record: "%{hiera('include_public_dns_record')}"
   include_private_dns_record: "%{hiera('include_private_dns_record')}"
 
   expose_to_public_internet: "%{hiera('expose_to_public_internet')}"
-  use_https: "%{hiera('use_https')}"
 
   target_group_port: "%{hiera('target_group_port')}"
   target_group_type: "%{hiera('target_group_type')}"
