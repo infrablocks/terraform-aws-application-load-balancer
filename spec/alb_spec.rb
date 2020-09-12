@@ -22,6 +22,16 @@ describe 'ALB' do
     end
   end
 
+  it 'outputs the zone ID' do
+    expect(output_for(:harness, 'zone_id'))
+        .to(eq(subject.canonical_hosted_zone_id))
+  end
+
+  it 'outputs the DNS name' do
+    expect(output_for(:harness, 'dns_name'))
+        .to(eq(subject.dns_name))
+  end
+
   context 'tags' do
     subject do
       elbv2_client
@@ -47,11 +57,10 @@ describe 'ALB' do
           .reduce({}, :merge)
     end
 
-    let(:cross_zone_enabled) { vars.enable_cross_zone_load_balancing == 'no' }
-
     it 'uses the provided flag for whether s3 access logs are enabled' do
       expect(subject['access_logs.s3.enabled']).to eq('false')
     end
+
     it 'uses the provided value for the s3 access logs prefix' do
       expect(subject['access_logs.s3.prefix']).to eq('')
     end
@@ -59,5 +68,21 @@ describe 'ALB' do
     it 'uses the provided flag for whether deletion protection is enabled' do
       expect(subject['deletion_protection.enabled']).to eq('false')
     end
+  end
+
+  context 'when ELB is exposed to the public internet' do
+    before(:all) do
+      reprovision(expose_to_public_internet: 'yes')
+    end
+
+    its(:scheme) { should eq('internet-facing') }
+  end
+
+  context 'when ELB is not exposed to the public internet' do
+    before(:all) do
+      reprovision(expose_to_public_internet: 'no')
+    end
+
+    its(:scheme) { should eq('internal') }
   end
 end

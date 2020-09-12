@@ -56,22 +56,22 @@ variable "target_group_port" {
 }
 
 variable "target_group_type" {
-  description = "The type of target that you must specify when registering targets with this target group. Defaults to instance"
+  description = "The type of target that you must specify when registering targets with this target group. Defaults to \"instance\"."
   default = "instance"
 }
 
 variable "target_group_protocol" {
-  description = "The protocol to use for routing traffic to the targets. Should be either HTTP or HTTPS, defaults to HTTP"
+  description = "The protocol to use for routing traffic to the targets. Should be either \"HTTP\" or \"HTTPS\", defaults to \"HTTP\"."
   default = "HTTP"
 }
 
 variable "health_check_port" {
-  description = "The port to use to connect with the target. Either ports 1-65536, or traffic-port. Defaults to traffic-port"
+  description = "The port to use to connect with the target. Either ports 1-65536, or \"traffic-port\". Defaults to \"traffic-port\"."
   default = "traffic-port"
 }
 
 variable "health_check_protocol" {
-  description = "The protocol to use to connect with the target. Defaults to HTTP"
+  description = "The protocol to use to connect with the target. Defaults to \"HTTP\"."
   default = "HTTP"
 }
 
