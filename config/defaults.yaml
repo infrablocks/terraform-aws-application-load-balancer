@@ -9,12 +9,6 @@ configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')
 
 domain_name: 'greasedscone.uk'
 
-allowed_cidrs:
-  - '0.0.0.0/0'
-egress_cidrs:
-  - '10.0.0.0/8'
-  - '192.168.0.0/16'
-
 vpc_cidr: '10.1.0.0/16'
 availability_zones:
   - "eu-west-2a"
@@ -31,6 +25,14 @@ idle_timeout: 120
 
 expose_to_public_internet: 'no'
 
+associate_default_security_group: "yes"
+include_default_ingress_rule: "yes"
+include_default_egress_rule: "yes"
+default_security_group_ingress_cidr: "10.0.0.0/16"
+default_security_group_egress_cidr: "10.0.0.0/16"
+default_security_group_egress_from_port: 0
+default_security_group_egress_to_port: 0
+
 target_group_port: 3023
 target_group_protocol: 'HTTP'
 target_group_target_type: 'instance'
@@ -43,6 +45,20 @@ health_check_interval: 30
 
 listener_port: 443
 listener_protocol: 'HTTPS'
+
+security_groups:
+  default:
+    associate: "%{hiera('associate_default_security_group')}"
+    ingress_rule:
+      include: "%{hiera('include_default_ingress_rule')}"
+      cidrs:
+        - "%{hiera('default_security_group_ingress_cidr')}"
+    egress_rule:
+      include: "%{hiera('include_default_egress_rule')}"
+      from_port: "%{hiera('default_security_group_egress_from_port')}"
+      to_port: "%{hiera('default_security_group_egress_to_port')}"
+      cidrs:
+        - "%{hiera('default_security_group_egress_cidr')}"
 
 dns:
   domain_name: "%{hiera('domain_name')}"

@@ -32,6 +32,8 @@ module "application_load_balancer" {
 
   expose_to_public_internet = var.expose_to_public_internet
 
+  security_groups = var.security_groups
+
   dns = var.dns
 
   target_groups = var.target_groups

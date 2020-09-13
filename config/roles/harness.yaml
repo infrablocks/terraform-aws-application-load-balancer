@@ -12,6 +12,7 @@ vars:
 
   expose_to_public_internet: "%{hiera('expose_to_public_internet')}"
 
+  security_groups: "%{hiera('security_groups')}"
   dns: "%{hiera('dns')}"
   target_groups: "%{hiera('target_groups')}"
   listeners: "%{hiera('listeners')}"
