@@ -1,14 +1,16 @@
-resource "aws_lb_listener" "load_balancer_listener" {
+resource "aws_lb_listener" "listener" {
+  for_each = local.listeners
+
   load_balancer_arn = aws_lb.load_balancer.arn
 
-  port = var.listener_port
-  protocol = var.listener_protocol
+  port = each.value.port
+  protocol = each.value.protocol
 
   //  ssl_policy = "ELBSecurityPolicy-2016-08"
-  certificate_arn = var.listener_certificate_arn
+  certificate_arn = each.value.certificate_arn
 
   default_action {
-    type = "forward"
-    target_group_arn = aws_lb_target_group.load_balancer_target_group.arn
+    type = each.value.default_action.type
+    target_group_arn = aws_lb_target_group.target_group[each.value.default_action.target_group_key].arn
   }
 }

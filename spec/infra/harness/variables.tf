@@ -3,26 +3,41 @@ variable "region" {}
 variable "component" {}
 variable "deployment_identifier" {}
 
-variable "domain_name" {}
-variable "public_zone_id" {}
-variable "private_zone_id" {}
-
 variable "idle_timeout" {}
-
-variable "include_public_dns_record" {}
-variable "include_private_dns_record" {}
 
 variable "expose_to_public_internet" {}
 
-variable "target_group_port" {}
-variable "target_group_type" {}
-variable "target_group_protocol" {}
+variable "dns" {
+  type = object({
+    domain_name: string,
+    records: list(object({zone_id: string}))
+  })
+}
 
-variable "listener_port" {}
-variable "listener_protocol" {}
+variable "target_groups" {
+  type = list(object({
+    key: string,
+    port: string,
+    protocol: string,
+    target_type: string,
+    health_check: object({
+      port: string,
+      protocol: string,
+      interval: number,
+      healthy_threshold: number,
+      unhealthy_threshold: number
+    })
+  }))
+}
 
-variable "health_check_port" {}
-variable "health_check_protocol" {}
-variable "health_check_interval" {}
-variable "health_check_unhealthy_threshold" {}
-variable "health_check_healthy_threshold" {}
+variable "listeners" {
+  type = list(object({
+    key: string,
+    port: string,
+    protocol: string,
+    default_action: object({
+      type: string,
+      target_group_key: string
+    })
+  }))
+}

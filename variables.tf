@@ -11,18 +11,6 @@ variable "subnet_ids" {
   type = list(string)
 }
 
-variable "domain_name" {
-  description = "The domain name of the supplied Route 53 zones."
-}
-
-variable "public_zone_id" {
-  description = "The ID of the public Route 53 zone."
-}
-
-variable "private_zone_id" {
-  description = "The ID of the private Route 53 zone."
-}
-
 variable "component" {
   description = "The component for which the load balancer is being created."
 }
@@ -36,70 +24,52 @@ variable "idle_timeout" {
   default = 60
 }
 
-variable "include_public_dns_record" {
-  description = "Whether or not to create a public DNS entry (\"yes\" or \"no\")."
-  default = "no"
-}
-
-variable "include_private_dns_record" {
-  description = "Whether or not to create a private DNS entry (\"yes\" or \"no\")."
-  default = "yes"
-}
-
 variable "expose_to_public_internet" {
   description = "Whether or not to the ALB should be internet facing (\"yes\" or \"no\")."
   default = "no"
 }
 
-variable "target_group_port" {
-  description = "The port that the application is listening on"
+variable "dns" {
+  description = "Details of DNS records to point at the created load balancer. Expects a domain_name, used to create each record and a list of records to create. Each record object includes a zone_id referencing the hosted zone in which to create the record."
+  type = object({
+    domain_name: string,
+    records: list(object({zone_id: string}))
+  })
+  default = {
+    domain_name: null,
+    records: []
+  }
 }
 
-variable "target_group_type" {
-  description = "The type of target that you must specify when registering targets with this target group. Defaults to \"instance\"."
-  default = "instance"
+variable "target_groups" {
+  description = "Details of target groups to create."
+  type = list(object({
+    key: string,
+    port: string,
+    protocol: string,
+    target_type: string,
+    health_check: object({
+      port: string,
+      protocol: string,
+      interval: number,
+      healthy_threshold: number,
+      unhealthy_threshold: number
+    })
+  }))
+  default = []
 }
 
-variable "target_group_protocol" {
-  description = "The protocol to use for routing traffic to the targets. Should be either \"HTTP\" or \"HTTPS\", defaults to \"HTTP\"."
-  default = "HTTP"
-}
-
-variable "health_check_port" {
-  description = "The port to use to connect with the target. Either ports 1-65536, or \"traffic-port\". Defaults to \"traffic-port\"."
-  default = "traffic-port"
-}
-
-variable "health_check_protocol" {
-  description = "The protocol to use to connect with the target. Defaults to \"HTTP\"."
-  default = "HTTP"
-}
-
-variable "health_check_interval" {
-  description = "The time between health check attempts in seconds."
-  default = 30
-}
-
-variable "health_check_unhealthy_threshold" {
-  description = "The number of failed health checks before an instance is taken out of service."
-  default = 2
-}
-
-variable "health_check_healthy_threshold" {
-  description = "The number of successful health checks before an instance is put into service."
-  default = 10
-}
-
-variable "listener_port" {
-  description = "The port on which the load balancer is listening. Defaults to 443"
-  default = 443
-}
-
-variable "listener_protocol" {
-  description = "The protocol for connections from clients to the load balancer. Either HTTP or HTTPS"
-  default = "HTTPS"
-}
-
-variable "listener_certificate_arn" {
-  description = "The ARN of the default SSL server certificate"
+variable "listeners" {
+  description = "Details of listeners to create."
+  type = list(object({
+    key: string,
+    port: string,
+    protocol: string,
+    certificate_arn: string,
+    default_action: object({
+      type: string,
+      target_group_key: string
+    })
+  }))
+  default = []
 }

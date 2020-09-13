@@ -29,14 +29,11 @@ private_zone_id: 'Z2CDAFD23Q10HO'
 
 idle_timeout: 120
 
-include_public_dns_record: 'no'
-include_private_dns_record: 'yes'
-
 expose_to_public_internet: 'no'
 
 target_group_port: 3023
-target_group_type: 'instance'
 target_group_protocol: 'HTTP'
+target_group_target_type: 'instance'
 
 health_check_port: 'traffic-port'
 health_check_protocol: 'HTTP'
@@ -46,3 +43,29 @@ health_check_interval: 30
 
 listener_port: 443
 listener_protocol: 'HTTPS'
+
+dns:
+  domain_name: "%{hiera('domain_name')}"
+  records:
+    - zone_id: "%{hiera('public_zone_id')}"
+    - zone_id: "%{hiera('private_zone_id')}"
+
+target_groups:
+  - key: "default"
+    port: "%{hiera('target_group_port')}"
+    protocol: "%{hiera('target_group_protocol')}"
+    target_type: "%{hiera('target_group_target_type')}"
+    health_check:
+      port: "%{hiera('health_check_port')}"
+      protocol: "%{hiera('health_check_protocol')}"
+      interval: "%{hiera('health_check_interval')}"
+      healthy_threshold: "%{hiera('health_check_healthy_threshold')}"
+      unhealthy_threshold: "%{hiera('health_check_unhealthy_threshold')}"
+
+listeners:
+  - key: "default"
+    port: "%{hiera('listener_port')}"
+    protocol: "%{hiera('listener_protocol')}"
+    default_action:
+      type: "forward"
+      target_group_key: "default"

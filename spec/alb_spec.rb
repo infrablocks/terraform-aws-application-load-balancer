@@ -42,7 +42,7 @@ describe 'ALB' do
     end
 
     it {should include({key: 'Name',
-                        value: "alb-#{component}-#{deployment_identifier}"})}
+                        value: "#{component}-#{deployment_identifier}"})}
     it {should include({key: 'Component', value: component})}
     it {should include({key: 'DeploymentIdentifier',
                         value: deployment_identifier})}
