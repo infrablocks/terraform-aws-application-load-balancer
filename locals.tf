@@ -9,7 +9,7 @@ locals {
       egress_rule: {
         include: lookup(var.security_groups.default.egress_rule, "include", "yes"),
         from_port: lookup(var.security_groups.default.egress_rule, "from_port", "0"),
-        to_port: lookup(var.security_groups.default.egress_rule, "to_port", "0"),
+        to_port: lookup(var.security_groups.default.egress_rule, "to_port", "65535"),
         cidrs: lookup(var.security_groups.default.egress_rule, "cidrs", [data.aws_vpc.vpc.cidr_block]),
       }
     }

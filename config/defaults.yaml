@@ -31,7 +31,7 @@ include_default_egress_rule: "yes"
 default_security_group_ingress_cidr: "10.0.0.0/16"
 default_security_group_egress_cidr: "10.0.0.0/16"
 default_security_group_egress_from_port: 0
-default_security_group_egress_to_port: 0
+default_security_group_egress_to_port: 65535
 
 target_group_port: 3023
 target_group_protocol: 'HTTP'

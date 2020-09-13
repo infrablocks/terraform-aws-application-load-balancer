@@ -56,7 +56,7 @@ variable "security_groups" {
       egress_rule: {
         include: "yes",
         from_port: 0,
-        to_port: 0,
+        to_port: 65535,
         cidrs: null
       }
     }

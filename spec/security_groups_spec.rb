@@ -54,7 +54,7 @@ describe 'Security Groups' do
       egress_rule = security_group.ip_permissions_egress.first
 
       expect(egress_rule.from_port).to(eq(0))
-      expect(egress_rule.to_port).to(eq(0))
+      expect(egress_rule.to_port).to(eq(65535))
       expect(egress_rule.ip_protocol).to(eq('tcp'))
       expect(egress_rule.ip_ranges.map(&:cidr_ip))
           .to(eq([egress_cidr]))
