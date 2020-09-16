@@ -1,8 +1,6 @@
 resource "aws_lb_target_group" "target_group" {
   for_each = local.target_groups
 
-  name = "${var.component}-${var.deployment_identifier}-${each.value.port}-${each.value.protocol}"
-
   vpc_id = var.vpc_id
 
   port = each.value.port
