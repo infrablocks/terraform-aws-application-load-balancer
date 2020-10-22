@@ -29,6 +29,7 @@ locals {
       protocol = lookup(target_group, "protocol", "HTTP"),
       target_type = lookup(target_group, "target_type", "instance"),
       health_check = {
+        path = lookup(target_group.health_check, "path", "/")
         port = lookup(target_group.health_check, "port", "traffic-port")
         protocol = lookup(target_group.health_check, "protocol", "HTTP"),
         interval = lookup(target_group.health_check, "interval", 30),

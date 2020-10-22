@@ -11,8 +11,6 @@ describe 'Listener' do
 
   it {should exist}
   its(:port) {
-    require 'pp'
-    pp vars.listeners
     should eq vars.listeners[0]["port"].to_i
   }
   its(:protocol) {should eq vars.listeners[0]["protocol"]}
