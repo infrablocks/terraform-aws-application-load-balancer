@@ -39,6 +39,7 @@ variable "target_groups" {
     protocol: string,
     target_type: string,
     health_check: object({
+      path: string,
       port: string,
       protocol: string,
       interval: number,

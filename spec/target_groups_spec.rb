@@ -26,12 +26,15 @@ describe 'Target Group' do
   its(:port) { should eq vars.target_groups[0]["port"].to_i }
   its(:target_type) { should eq vars.target_groups[0]["target_type"] }
 
-  context 'healthcheck' do
+  fcontext 'healthcheck' do
     its(:health_check_protocol) do
       should eq vars.target_groups[0]["health_check"]["protocol"]
     end
     its(:health_check_port) do
       should eq vars.target_groups[0]["health_check"]["port"]
+    end
+    its(:health_check_path) do
+      should eq vars.target_groups[0]["health_check"]["path"]
     end
     its(:health_check_interval_seconds) do
       should eq vars.target_groups[0]["health_check"]["interval"].to_i
