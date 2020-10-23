@@ -22,4 +22,10 @@ resource "aws_lb_target_group" "target_group" {
     Component = var.component
     DeploymentIdentifier = var.deployment_identifier
   }
+
+  # this dependency is required to ensure the target group has an LB before it
+  # can be used by a dependent
+  depends_on = [
+    aws_lb.load_balancer
+  ]
 }
