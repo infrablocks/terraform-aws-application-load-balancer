@@ -8,7 +8,7 @@ describe 'ALB' do
   let(:arn) {output_for(:harness, 'arn')}
 
   let(:subnet_ids) do
-    output_for(:prerequisites, 'subnet_ids', parse: true)
+    output_for(:prerequisites, 'subnet_ids')
   end
 
   subject {alb(name)}

@@ -5,7 +5,7 @@ describe 'Target Group' do
   let(:deployment_identifier) { vars.deployment_identifier }
 
   let(:target_groups) do
-    output_for(:harness, 'target_groups', parse: true)
+    output_for(:harness, 'target_groups')
   end
 
   let(:name) { target_groups["default"]["name"] }

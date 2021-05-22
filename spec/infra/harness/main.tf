@@ -19,7 +19,8 @@ locals {
 }
 
 module "application_load_balancer" {
-  source = "../../../../"
+  # This makes absolutely no sense. I think there's a bug in terraform.
+  source = "./../../../../../../../"
 
   region = var.region
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id

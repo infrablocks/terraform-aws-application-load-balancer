@@ -4,7 +4,7 @@ describe 'Listener' do
   let(:component) {vars.component}
   let(:deployment_identifier) {vars.deployment_identifier}
 
-  let(:listeners) {output_for(:harness, 'listeners', parse: true)}
+  let(:listeners) {output_for(:harness, 'listeners')}
   let(:certificate_arn) {output_for(:prerequisites, 'certificate_arn')}
 
   subject {alb_listener(listeners["default"]["arn"])}
