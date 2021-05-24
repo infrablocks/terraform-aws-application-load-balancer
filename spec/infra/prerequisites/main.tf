@@ -17,5 +17,6 @@ module "acm_certificate" {
   version = "0.8.0"
 
   domain_name = var.domain_name
-  zone_id = var.public_zone_id
+  domain_zone_id = var.public_zone_id
+  subject_alternative_name_zone_id = var.public_zone_id
 }
