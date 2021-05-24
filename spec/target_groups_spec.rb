@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Target Group' do
+fdescribe 'Target Group' do
   let(:component) { vars.component }
   let(:deployment_identifier) { vars.deployment_identifier }
 
@@ -8,8 +8,8 @@ describe 'Target Group' do
     output_for(:harness, 'target_groups')
   end
 
-  let(:name) { target_groups["default"]["name"] }
-  let(:arn) { target_groups["default"]["arn"] }
+  let(:name) { target_groups[:default][:name] }
+  let(:arn) { target_groups[:default][:arn] }
 
   let(:vpc) { output_for(:harness, 'vpc_id') }
 
@@ -26,7 +26,7 @@ describe 'Target Group' do
   its(:port) { should eq vars.target_groups[0]["port"].to_i }
   its(:target_type) { should eq vars.target_groups[0]["target_type"] }
 
-  fcontext 'healthcheck' do
+  context 'healthcheck' do
     its(:health_check_protocol) do
       should eq vars.target_groups[0]["health_check"]["protocol"]
     end

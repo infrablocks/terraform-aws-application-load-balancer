@@ -7,7 +7,7 @@ describe 'Listener' do
   let(:listeners) {output_for(:harness, 'listeners')}
   let(:certificate_arn) {output_for(:prerequisites, 'certificate_arn')}
 
-  subject {alb_listener(listeners["default"]["arn"])}
+  subject {alb_listener(listeners[:default][:arn])}
 
   it {should exist}
   its(:port) {
