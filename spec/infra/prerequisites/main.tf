@@ -14,7 +14,7 @@ module "base_network" {
 
 module "acm_certificate" {
   source = "infrablocks/acm-certificate/aws"
-  version = "0.5.0"
+  version = "0.8.0"
 
   domain_name = var.domain_name
   zone_id = var.public_zone_id
