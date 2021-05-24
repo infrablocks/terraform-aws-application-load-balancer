@@ -14,15 +14,15 @@ module "base_network" {
 
 module "acm_certificate" {
   source = "infrablocks/acm-certificate/aws"
-  version = "0.9.0-rc.2"
+  version = "0.9.0-rc.3"
 
   domain_name = var.domain_name
   domain_zone_id = var.public_zone_id
   subject_alternative_name_zone_id = var.public_zone_id
 
   providers = {
-    certificate = aws
-    domainvalidation = aws
-    sanvalidation = aws
+    aws.certificate = aws
+    aws.domain_validation = aws
+    aws.san_validation = aws
   }
 }
