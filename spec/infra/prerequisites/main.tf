@@ -1,6 +1,6 @@
 module "base_network" {
   source = "infrablocks/base-networking/aws"
-  version = "3.0.0"
+  version = "4.0.0"
 
   region = var.region
   vpc_cidr = var.vpc_cidr
@@ -14,7 +14,7 @@ module "base_network" {
 
 module "acm_certificate" {
   source = "infrablocks/acm-certificate/aws"
-  version = "0.9.0-rc.3"
+  version = "1.0.0"
 
   domain_name = var.domain_name
   domain_zone_id = var.public_zone_id
