@@ -104,6 +104,9 @@ module will create everything you need. See the
 [docs](https://github.com/tobyclemson/terraform-aws-base-networking/blob/master/README.md)
 for usage instructions.
 
+See the 
+[Terraform registry entry](https://registry.terraform.io/modules/infrablocks/application-load-balancer/aws/latest) 
+for more details.
 
 ### Inputs
 
@@ -145,6 +148,10 @@ for usage instructions.
 | dns_name                                | The DNS name of the created ALB                           |
 | address                                 | The address of the DNS record(s) for the created ALB      |
 
+### Compatibility
+
+This module is compatible with Terraform versions greater than or equal to 
+Terraform 0.14.
 
 Development
 -----------
@@ -269,12 +276,15 @@ openssl aes-256-cbc \
 Contributing
 ------------
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/infrablocks/terraform-aws-application-load-balancer. 
-This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to 
-the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/infrablocks/terraform-aws-application-load-balancer. 
+This project is intended to be a safe, welcoming space for collaboration, and
+contributors are expected to adhere to the
+[Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 License
 -------
 
-The library is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+The library is available as open source under the terms of the 
+[MIT License](http://opensource.org/licenses/MIT).
