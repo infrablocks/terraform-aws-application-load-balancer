@@ -12,6 +12,7 @@ locals {
       key = listener.key
       port = listener.port,
       protocol: listener.protocol,
+      ssl_policy: listener.ssl_policy
       certificate_arn: data.terraform_remote_state.prerequisites.outputs.certificate_arn,
       default_action: listener.default_action
     }

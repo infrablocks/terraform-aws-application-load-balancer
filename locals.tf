@@ -45,6 +45,7 @@ locals {
       port = lookup(listener, "port", 443),
       protocol = lookup(listener, "protocol", "HTTPS"),
       certificate_arn = listener.certificate_arn,
+      ssl_policy = lookup(listener, "ssl_policy", "ELBSecurityPolicy-2016-08"),
       default_action = {
         type = lookup(listener.default_action, "type", "forward"),
         target_group_key = lookup(listener.default_action, "target_group_key", null),

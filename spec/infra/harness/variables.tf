@@ -54,6 +54,7 @@ variable "listeners" {
     key: string,
     port: string,
     protocol: string,
+    ssl_policy: string,
     default_action: object({
       type: string,
       target_group_key: string

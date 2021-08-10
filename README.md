@@ -136,6 +136,7 @@ for more details.
 |health_check_healthy_threshold| The number of successful health checks before an instance is put into service	|10| no|
 |listener_port| Port that ALB listens on|443| no|
 |listener_protocol| Protocol that the ALB listens on|HTTPS| no|
+|listener_ssl_policy| SSL policy for the ALB |ELBSecurityPolicy-2016-08| no|
 |listener_certificate_arn|certificate ARN to be used by the certificate|-| yes|
 
 ### Outputs

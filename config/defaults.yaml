@@ -46,6 +46,7 @@ health_check_interval: 30
 
 listener_port: 443
 listener_protocol: 'HTTPS'
+listener_ssl_policy: 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06'
 
 security_groups:
   default:
@@ -84,6 +85,7 @@ listeners:
   - key: "default"
     port: "%{hiera('listener_port')}"
     protocol: "%{hiera('listener_protocol')}"
+    ssl_policy: "%{hiera('listener_ssl_policy')}"
     default_action:
       type: "forward"
       target_group_key: "default"

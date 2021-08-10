@@ -6,7 +6,7 @@ resource "aws_lb_listener" "listener" {
   port = each.value.port
   protocol = each.value.protocol
 
-  //  ssl_policy = "ELBSecurityPolicy-2016-08"
+  ssl_policy = each.value.ssl_policy
   certificate_arn = each.value.certificate_arn
 
   default_action {

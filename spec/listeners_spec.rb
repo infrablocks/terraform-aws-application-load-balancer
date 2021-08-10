@@ -15,6 +15,8 @@ describe 'Listener' do
   }
   its(:protocol) {should eq vars.listeners[0]["protocol"]}
 
+  its(:ssl_policy) {should eq vars.listeners[0]["ssl_policy"]}
+
   it 'uses the provided certificate' do
     certificates = subject.certificates
 
