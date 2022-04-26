@@ -26,7 +26,6 @@ locals {
     for target_group in var.target_groups : target_group.key => {
       key = target_group.key,
       port = target_group.port,
-      deregistration_delay = lookup(target_group.deregistration_delay, "deregistration_delay", 300)
       protocol = lookup(target_group, "protocol", "HTTP"),
       target_type = lookup(target_group, "target_type", "instance"),
       health_check = {
