@@ -90,9 +90,6 @@ module "application_load_balancer" {
 
   idle_timeout = 60
 
-  include_public_dns_record = 'yes'
-  include_private_dns_record = 'yes'
-
   expose_to_public_internet = 'yes'
 }
 ```
@@ -122,8 +119,6 @@ for more details.
 |private_zone_id| The ID of the private Route 53 zone	|-| yes|
 |enable_cross_zone_load_balancing| Whether or not to enable cross zone load balancing (\"yes\" or \"no\").|no| no|
 |idle_timeout| The time after which idle connections are closed.|60| no|
-|include_public_dns_record| Whether or not to create a public DNS entry (\"yes\" or \"no\").|no| no|
-|include_private_dns_record| Whether or not to create a private DNS entry (\"yes\" or \"no\").|yes| no|
 |expose_to_public_internet| Whether or not to the ALB should be internet facing (\"yes\" or \"no\").|no| no|
 |use_https| whether or not to use HTTPS|no| no|
 |target_group_port|The port that the application is listening on|-| yes|
