@@ -13,3 +13,15 @@ output "subnet_ids" {
 output "certificate_arn" {
   value = module.acm_certificate.certificate_arn
 }
+
+output "domain_name" {
+  value = var.domain_name
+}
+
+output "public_zone_id" {
+  value = var.public_zone_id
+}
+
+output "private_zone_id" {
+  value = var.private_zone_id
+}

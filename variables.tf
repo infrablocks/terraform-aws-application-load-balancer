@@ -20,6 +20,7 @@ variable "deployment_identifier" {
 }
 
 variable "idle_timeout" {
+  type = number
   description = "The time after which idle connections are closed."
   default = 60
 }

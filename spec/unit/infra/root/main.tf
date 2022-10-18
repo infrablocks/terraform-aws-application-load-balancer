@@ -6,22 +6,8 @@ data "terraform_remote_state" "prerequisites" {
   }
 }
 
-locals {
-  listeners = [
-    for listener in var.listeners : {
-      key = listener.key
-      port = listener.port,
-      protocol: listener.protocol,
-      ssl_policy: listener.ssl_policy
-      certificate_arn: data.terraform_remote_state.prerequisites.outputs.certificate_arn,
-      default_action: listener.default_action
-    }
-  ]
-}
-
 module "application_load_balancer" {
-  # This makes absolutely no sense. I think there's a bug in terraform.
-  source = "./../../../../../../../"
+  source = "../../../.."
 
   region = var.region
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
@@ -39,5 +25,5 @@ module "application_load_balancer" {
   dns = var.dns
 
   target_groups = var.target_groups
-  listeners = local.listeners
+  listeners = var.listeners
 }

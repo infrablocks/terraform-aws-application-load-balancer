@@ -1,3 +1,21 @@
+locals {
+  target_groups_output = {
+    for target_group in local.target_groups : target_group.key => {
+      id         = aws_lb_target_group.target_group[target_group.key].id,
+      name       = aws_lb_target_group.target_group[target_group.key].name,
+      arn        = aws_lb_target_group.target_group[target_group.key].arn,
+      arn_suffix = aws_lb_target_group.target_group[target_group.key].arn_suffix,
+    }
+  }
+
+  listeners_output = {
+    for listener in local.listeners : listener.key => {
+      arn             = aws_lb_listener.listener[listener.key].arn,
+      certificate_arn = aws_lb_listener.listener[listener.key].certificate_arn
+    }
+  }
+}
+
 output "name" {
   description = "The name of the created ALB."
   value = aws_lb.load_balancer.name

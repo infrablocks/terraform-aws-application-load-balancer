@@ -6,8 +6,16 @@ output "name" {
   value = module.application_load_balancer.name
 }
 
+output "id" {
+  value = module.application_load_balancer.id
+}
+
 output "arn" {
   value = module.application_load_balancer.arn
+}
+
+output "arn_suffix" {
+  value = module.application_load_balancer.arn_suffix
 }
 
 output "zone_id" {

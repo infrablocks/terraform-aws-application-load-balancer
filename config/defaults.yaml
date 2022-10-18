@@ -2,90 +2,17 @@
 region: 'eu-west-2'
 
 component: 'test'
-deployment_identifier: "%{hiera('deployment_identifier')}"
+deployment_identifier: "%{hiera('seed')}"
 
 work_directory: 'build'
 configuration_directory: "%{hiera('work_directory')}/%{hiera('source_directory')}"
 
-domain_name: 'greasedscone.uk'
+domain_name: 'infrablocks.click'
 
-vpc_cidr: '10.1.0.0/16'
+vpc_cidr: "10.1.0.0/16"
 availability_zones:
   - "eu-west-2a"
   - "eu-west-2b"
 
-dependencies:
-  - "other"
-  - "stuff"
-
-public_zone_id: 'Z4Q2X3ESOZT4N'
-private_zone_id: 'Z2CDAFD23Q10HO'
-
-idle_timeout: 120
-
-expose_to_public_internet: 'no'
-
-associate_default_security_group: "yes"
-include_default_ingress_rule: "yes"
-include_default_egress_rule: "yes"
-default_security_group_ingress_cidr: "10.0.0.0/16"
-default_security_group_egress_cidr: "10.0.0.0/16"
-default_security_group_egress_from_port: 0
-default_security_group_egress_to_port: 65535
-
-target_group_port: 3023
-target_group_protocol: 'HTTP'
-target_group_target_type: 'instance'
-
-health_check_port: 'traffic-port'
-health_check_path: '/health'
-health_check_protocol: 'HTTP'
-health_check_healthy_threshold: 5
-health_check_unhealthy_threshold: 5
-health_check_interval: 30
-
-listener_port: 443
-listener_protocol: 'HTTPS'
-listener_ssl_policy: 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06'
-
-security_groups:
-  default:
-    associate: "%{hiera('associate_default_security_group')}"
-    ingress_rule:
-      include: "%{hiera('include_default_ingress_rule')}"
-      cidrs:
-        - "%{hiera('default_security_group_ingress_cidr')}"
-    egress_rule:
-      include: "%{hiera('include_default_egress_rule')}"
-      from_port: "%{hiera('default_security_group_egress_from_port')}"
-      to_port: "%{hiera('default_security_group_egress_to_port')}"
-      cidrs:
-        - "%{hiera('default_security_group_egress_cidr')}"
-
-dns:
-  domain_name: "%{hiera('domain_name')}"
-  records:
-    - zone_id: "%{hiera('public_zone_id')}"
-    - zone_id: "%{hiera('private_zone_id')}"
-
-target_groups:
-  - key: "default"
-    port: "%{hiera('target_group_port')}"
-    protocol: "%{hiera('target_group_protocol')}"
-    target_type: "%{hiera('target_group_target_type')}"
-    health_check:
-      path: "%{hiera('health_check_path')}"
-      port: "%{hiera('health_check_port')}"
-      protocol: "%{hiera('health_check_protocol')}"
-      interval: "%{hiera('health_check_interval')}"
-      healthy_threshold: "%{hiera('health_check_healthy_threshold')}"
-      unhealthy_threshold: "%{hiera('health_check_unhealthy_threshold')}"
-
-listeners:
-  - key: "default"
-    port: "%{hiera('listener_port')}"
-    protocol: "%{hiera('listener_protocol')}"
-    ssl_policy: "%{hiera('listener_ssl_policy')}"
-    default_action:
-      type: "forward"
-      target_group_key: "default"
+public_zone_id: "Z08829023L5IPIQBJOX63"
+private_zone_id: 'Z0211739BXR21FNN139O'

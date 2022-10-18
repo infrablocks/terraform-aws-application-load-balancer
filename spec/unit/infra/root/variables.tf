@@ -3,9 +3,14 @@ variable "region" {}
 variable "component" {}
 variable "deployment_identifier" {}
 
-variable "idle_timeout" {}
+variable "idle_timeout" {
+  type = number
+  default = null
+}
 
-variable "expose_to_public_internet" {}
+variable "expose_to_public_internet" {
+  default = null
+}
 
 variable "security_groups" {
   type = object({
@@ -23,6 +28,7 @@ variable "security_groups" {
       }),
     })
   })
+  default = null
 }
 
 variable "dns" {
@@ -30,6 +36,7 @@ variable "dns" {
     domain_name: string,
     records: list(object({zone_id: string}))
   })
+  default = null
 }
 
 variable "target_groups" {
@@ -47,6 +54,7 @@ variable "target_groups" {
       unhealthy_threshold: number
     })
   }))
+  default = null
 }
 
 variable "listeners" {
@@ -55,9 +63,11 @@ variable "listeners" {
     port: string,
     protocol: string,
     ssl_policy: string,
+    certificate_arn: string,
     default_action: object({
       type: string,
       target_group_key: string
     })
   }))
+  default = null
 }
