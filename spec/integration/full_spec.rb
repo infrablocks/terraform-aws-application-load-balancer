@@ -232,7 +232,6 @@ describe 'full' do
     its(:protocol) { is_expected.to(eq('HTTP')) }
     its(:port) { is_expected.to(eq(80)) }
     its(:target_type) { is_expected.to(eq('instance')) }
-    its(:deregistration_delay) { is_expected.to(eq('60')) }
 
     describe 'healthcheck' do
       its(:health_check_protocol) do
