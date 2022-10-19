@@ -68,6 +68,14 @@ describe 'target group' do
               .with_attribute_value(:target_type, @target_group[:target_type]))
     end
 
+    it 'uses the provided deregistration delay' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value(
+                :deregistration_delay, @target_group[:deregistration_delay].to_s
+              ))
+    end
+
     it 'uses the provided health check path' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb_target_group')
@@ -150,6 +158,7 @@ describe 'target group' do
         port: 80,
         protocol: 'HTTP',
         target_type: 'instance',
+        deregistration_delay: 300,
         health_check: health_check(
           path: '/health',
           port: 'traffic-port',
@@ -164,6 +173,7 @@ describe 'target group' do
         port: 90,
         protocol: 'HTTPS',
         target_type: 'ip',
+        deregistration_delay: 90,
         health_check: health_check(
           path: '/status',
           port: '8443',
@@ -220,6 +230,18 @@ describe 'target group' do
                 .with_attribute_value(:port, target_group[:port])
                 .with_attribute_value(
                   :target_type, target_group[:target_type]
+                ))
+      end
+    end
+
+    it 'uses the provided deregistration delay' do
+      @target_groups.each do |target_group|
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_target_group')
+                .with_attribute_value(:port, target_group[:port])
+                .with_attribute_value(
+                  :deregistration_delay,
+                  target_group[:deregistration_delay].to_s
                 ))
       end
     end
@@ -329,6 +351,7 @@ describe 'target group' do
         port: 80,
         protocol: nil,
         target_type: nil,
+        deregistration_delay: nil,
         health_check: {
           path: nil,
           port: nil,
@@ -365,6 +388,12 @@ describe 'target group' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb_target_group')
               .with_attribute_value(:target_type, 'instance'))
+    end
+
+    it 'uses the default deregistration delay' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value(:deregistration_delay, '300'))
     end
 
     it 'uses / for health check path' do
@@ -412,6 +441,7 @@ describe 'target group' do
       port: 80,
       protocol: 'HTTP',
       target_type: 'instance',
+      deregistration_delay: 450,
       health_check:
     }.merge(overrides)
   end

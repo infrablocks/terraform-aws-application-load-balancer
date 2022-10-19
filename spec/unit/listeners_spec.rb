@@ -50,6 +50,7 @@ describe 'listeners' do
             port: 80,
             protocol: 'HTTP',
             target_type: 'instance',
+            deregistration_delay: nil,
             health_check:
               {
                 path: '/health',
@@ -157,6 +158,7 @@ describe 'listeners' do
             port: 80,
             protocol: 'HTTP',
             target_type: 'instance',
+            deregistration_delay: nil,
             health_check:
               {
                 path: '/health',
@@ -172,6 +174,7 @@ describe 'listeners' do
             port: 8080,
             protocol: 'HTTP',
             target_type: 'instance',
+            deregistration_delay: nil,
             health_check:
               {
                 path: '/health',
@@ -264,6 +267,7 @@ describe 'listeners' do
             port: 80,
             protocol: 'HTTP',
             target_type: 'instance',
+            deregistration_delay: nil,
             health_check:
               {
                 path: '/health',

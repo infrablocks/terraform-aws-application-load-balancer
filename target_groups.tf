@@ -8,6 +8,8 @@ resource "aws_lb_target_group" "target_group" {
 
   target_type = each.value.target_type
 
+  deregistration_delay = each.value.deregistration_delay
+
   health_check {
     path = each.value.health_check.path
     port = each.value.health_check.port

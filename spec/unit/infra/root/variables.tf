@@ -45,6 +45,7 @@ variable "target_groups" {
     port: string,
     protocol: string,
     target_type: string,
+    deregistration_delay: number,
     health_check: object({
       path: string,
       port: string,

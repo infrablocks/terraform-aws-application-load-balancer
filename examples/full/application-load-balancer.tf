@@ -28,7 +28,8 @@ module "application_load_balancer" {
       key : "default"
       port : 80
       protocol : "HTTP"
-      target_type : "instance"
+      target_type : "instance",
+      deregistration_delay : 60,
       health_check : {
         path : "/health"
         port : 80
