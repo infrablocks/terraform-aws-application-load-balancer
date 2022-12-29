@@ -27,7 +27,7 @@ output "vpc_id" {
 }
 
 output "id" {
-  description = "The id of the created ALB."
+  description = "The ID of the created ALB."
   value = aws_lb.load_balancer.id
 }
 
