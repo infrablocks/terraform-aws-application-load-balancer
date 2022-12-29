@@ -210,11 +210,22 @@ access key are available. These instructions utilise
 [aws-vault](https://github.com/99designs/aws-vault) which makes credential
 management easy and secure.
 
-To provision module infrastructure, run tests and then destroy that
-infrastructure, execute:
+To run the full build, including unit and integration tests, execute:
 
 ```shell
 aws-vault exec <profile> -- ./go
+```
+
+To run the unit tests, execute:
+
+```shell
+aws-vault exec <profile> -- ./go test:unit
+```
+
+To run the integration tests, execute:
+
+```shell
+aws-vault exec <profile> -- ./go test:integration
 ```
 
 To provision the module prerequisites:
@@ -241,21 +252,21 @@ To destroy the module prerequisites:
 aws-vault exec <profile> -- ./go deployment:prerequisites:destroy[<deployment_identifier>]
 ```
 
-Configuration parameters can be overridden via environment variables:
+Configuration parameters can be overridden via environment variables. For
+example, to run the unit tests with a seed of `"testing"`, execute:
 
 ```shell
-DEPLOYMENT_IDENTIFIER=testing aws-vault exec <profile> -- ./go
+SEED=testing aws-vault exec <profile> -- ./go test:unit
 ```
 
-When a deployment identifier is provided via an environment variable,
-infrastructure will not be destroyed at the end of test execution. This can
-be useful during development to avoid lengthy provision and destroy cycles.
+When a seed is provided via an environment variable, infrastructure will not be
+destroyed at the end of test execution. This can be useful during development
+to avoid lengthy provision and destroy cycles.
 
-By default, providers will be downloaded for each terraform execution. To
-cache providers between calls:
+To subsequently destroy unit test infrastructure for a given seed:
 
 ```shell
-TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache" aws-vault exec <profile> -- ./go
+FORCE_DESTROY=yes SEED=testing aws-vault exec <profile> -- ./go test:unit
 ```
 
 ### Common Tasks
