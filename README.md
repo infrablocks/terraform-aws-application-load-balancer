@@ -167,13 +167,13 @@ Installing the required tools is best managed by [homebrew](http://brew.sh).
 
 To install homebrew:
 
-```
+```shell
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 Then, to install the required tools:
 
-```
+```shell
 # ruby
 brew install rbenv
 brew install ruby-build
@@ -213,37 +213,37 @@ management easy and secure.
 To provision module infrastructure, run tests and then destroy that
 infrastructure, execute:
 
-```bash
+```shell
 aws-vault exec <profile> -- ./go
 ```
 
 To provision the module prerequisites:
 
-```bash
+```shell
 aws-vault exec <profile> -- ./go deployment:prerequisites:provision[<deployment_identifier>]
 ```
 
 To provision the module contents:
 
-```bash
+```shell
 aws-vault exec <profile> -- ./go deployment:root:provision[<deployment_identifier>]
 ```
 
 To destroy the module contents:
 
-```bash
+```shell
 aws-vault exec <profile> -- ./go deployment:root:destroy[<deployment_identifier>]
 ```
 
 To destroy the module prerequisites:
 
-```bash
+```shell
 aws-vault exec <profile> -- ./go deployment:prerequisites:destroy[<deployment_identifier>]
 ```
 
 Configuration parameters can be overridden via environment variables:
 
-```bash
+```shell
 DEPLOYMENT_IDENTIFIER=testing aws-vault exec <profile> -- ./go
 ```
 
@@ -254,7 +254,7 @@ be useful during development to avoid lengthy provision and destroy cycles.
 By default, providers will be downloaded for each terraform execution. To
 cache providers between calls:
 
-```bash
+```shell
 TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache" aws-vault exec <profile> -- ./go
 ```
 
@@ -264,7 +264,7 @@ TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache" aws-vault exec <profile> -
 
 To generate an SSH key pair:
 
-```
+```shell
 ssh-keygen -m PEM -t rsa -b 4096 -C integration-test@example.com -N '' -f config/secrets/keys/bastion/ssh
 ```
 
@@ -272,13 +272,13 @@ ssh-keygen -m PEM -t rsa -b 4096 -C integration-test@example.com -N '' -f config
 
 To generate a self signed certificate:
 
-```
+```shell
 openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
 ```
 
 To decrypt the resulting key:
 
-```
+```shell
 openssl rsa -in key.pem -out ssl.key
 ```
 
@@ -286,7 +286,7 @@ openssl rsa -in key.pem -out ssl.key
 
 To encrypt a GPG key for use by CircleCI:
 
-```bash
+```shell
 openssl aes-256-cbc \
   -e \
   -md sha1 \
@@ -297,7 +297,7 @@ openssl aes-256-cbc \
 
 To check decryption is working correctly:
 
-```bash
+```shell
 openssl aes-256-cbc \
   -d \
   -md sha1 \
