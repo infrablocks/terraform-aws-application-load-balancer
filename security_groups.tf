@@ -1,5 +1,5 @@
 resource "aws_security_group" "default" {
-  for_each = (local.security_groups.default.associate == "yes") ? local.security_groups : {}
+  for_each = var.security_groups.default.associate ? var.security_groups : {}
 
   name = "${var.component}-${var.deployment_identifier}"
   description = "ALB security group for: ${var.component}, deployment: ${var.deployment_identifier}"
@@ -13,7 +13,9 @@ resource "aws_security_group" "default" {
 }
 
 resource "aws_security_group_rule" "default_ingress" {
-  for_each = (local.security_groups.default.associate == "yes" && local.security_groups.default.ingress_rule.include == "yes") ? local.listeners : {}
+  for_each = var.security_groups.default.associate && var.security_groups.default.ingress_rule.include ? {
+    for listener in var.listeners : listener.key => listener
+  } : {}
 
   type = "ingress"
 
@@ -23,11 +25,11 @@ resource "aws_security_group_rule" "default_ingress" {
   from_port = each.value.port
   to_port = each.value.port
 
-  cidr_blocks = local.security_groups.default.ingress_rule.cidrs
+  cidr_blocks = coalesce(var.security_groups.default.ingress_rule.cidrs, [data.aws_vpc.vpc.cidr_block])
 }
 
 resource "aws_security_group_rule" "default_egress" {
-  for_each = (local.security_groups.default.associate == "yes" && local.security_groups.default.egress_rule.include == "yes") ? local.security_groups : {}
+  for_each = var.security_groups.default.associate && var.security_groups.default.egress_rule.include ? var.security_groups : {}
 
   type = "egress"
 
@@ -37,5 +39,5 @@ resource "aws_security_group_rule" "default_egress" {
   from_port = each.value.egress_rule.from_port
   to_port = each.value.egress_rule.to_port
 
-  cidr_blocks = local.security_groups.default.egress_rule.cidrs
+  cidr_blocks = coalesce(each.value.egress_rule.cidrs, [data.aws_vpc.vpc.cidr_block])
 }

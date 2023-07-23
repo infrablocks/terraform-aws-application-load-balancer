@@ -96,10 +96,10 @@ describe 'ALB' do
     end
   end
 
-  describe 'when expose_to_public_internet is "yes"' do
+  describe 'when expose_to_public_internet is true' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.expose_to_public_internet = 'yes'
+        vars.expose_to_public_internet = true
       end
     end
 
@@ -110,10 +110,10 @@ describe 'ALB' do
     end
   end
 
-  describe 'when expose_to_public_internet is "no"' do
+  describe 'when expose_to_public_internet is false' do
     before(:context) do
       @plan = plan(role: :root) do |vars|
-        vars.expose_to_public_internet = 'no'
+        vars.expose_to_public_internet = false
       end
     end
 

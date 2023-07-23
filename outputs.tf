@@ -1,6 +1,6 @@
 locals {
   target_groups_output = {
-    for target_group in local.target_groups : target_group.key => {
+    for target_group in var.target_groups : target_group.key => {
       id         = aws_lb_target_group.target_group[target_group.key].id,
       name       = aws_lb_target_group.target_group[target_group.key].name,
       arn        = aws_lb_target_group.target_group[target_group.key].arn,
@@ -9,7 +9,7 @@ locals {
   }
 
   listeners_output = {
-    for listener in local.listeners : listener.key => {
+    for listener in var.listeners : listener.key => {
       arn             = aws_lb_listener.listener[listener.key].arn,
       certificate_arn = aws_lb_listener.listener[listener.key].certificate_arn
     }
@@ -53,7 +53,7 @@ output "dns_name" {
 
 output "address" {
   description = "The address of the DNS record(s) for the created ALB."
-  value = length(local.dns.records) > 0 ? "${var.component}-${var.deployment_identifier}.${local.dns.domain_name}" : ""
+  value = length(coalesce(var.dns.records, [])) > 0 ? "${var.component}-${var.deployment_identifier}.${var.dns.domain_name}" : ""
 }
 
 output "target_groups" {

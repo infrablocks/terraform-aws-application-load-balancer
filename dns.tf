@@ -1,8 +1,10 @@
 resource "aws_route53_record" "load_balancer" {
-  for_each = local.dns.records
+  for_each = {
+    for record in coalesce(var.dns.records, []) : record.zone_id => record
+  }
 
   zone_id = each.value.zone_id
-  name = "${var.component}-${var.deployment_identifier}.${local.dns.domain_name}"
+  name = "${var.component}-${var.deployment_identifier}.${var.dns.domain_name}"
   type = "A"
 
   alias {

@@ -1,5 +1,7 @@
 resource "aws_lb_target_group" "target_group" {
-  for_each = local.target_groups
+  for_each = {
+    for target_group in var.target_groups : target_group.key => target_group
+  }
 
   vpc_id = var.vpc_id
 

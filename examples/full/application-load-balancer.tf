@@ -8,7 +8,7 @@ module "application_load_balancer" {
   component             = var.component
   deployment_identifier = var.deployment_identifier
 
-  expose_to_public_internet = "yes"
+  expose_to_public_internet = true
 
   listeners = [
     {
@@ -42,13 +42,13 @@ module "application_load_balancer" {
   ]
   security_groups = {
     default : {
-      associate : "yes",
+      associate : true,
       ingress_rule : {
-        include : "yes"
+        include : true
         cidrs : [module.base_network.vpc_cidr]
       },
       egress_rule : {
-        include : "yes",
+        include : true,
         from_port : 0,
         to_port : 65535,
         cidrs : [module.base_network.vpc_cidr]

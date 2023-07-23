@@ -1,5 +1,7 @@
 resource "aws_lb_listener" "listener" {
-  for_each = local.listeners
+  for_each = {
+    for listener in var.listeners : listener.key => listener
+  }
 
   load_balancer_arn = aws_lb.load_balancer.arn
 
