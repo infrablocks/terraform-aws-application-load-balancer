@@ -122,7 +122,6 @@ namespace :secrets do
     directory:ensure
     encryption:passphrase:generate
     keys:deploy:generate
-    keys:cluster:generate
     keys:secrets:generate
   ]
 
