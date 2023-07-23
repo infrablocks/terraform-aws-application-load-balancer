@@ -33,11 +33,6 @@ echo "Checking for system dependencies."
     missing_dependency="yes"
   fi
 
-  if ! type bundler >/dev/null 2>&1; then
-    echo "This codebase requires Bundler."
-    missing_dependency="yes"
-  fi
-
   if [[ "$missing_dependency" = "yes" ]]; then
     echo "Please install missing dependencies to continue."
     exit 1
@@ -47,13 +42,6 @@ echo "Checking for system dependencies."
 fi
 
 if [[ "$offline" == "no" ]]; then
-  echo "Installing bundler."
-  if [[ "$verbose" == "yes" ]]; then
-    gem install --no-document bundler
-  else
-    gem install --no-document bundler >/dev/null
-  fi
-
   echo "Installing ruby dependencies."
   if [[ "$verbose" == "yes" ]]; then
     bundle install
