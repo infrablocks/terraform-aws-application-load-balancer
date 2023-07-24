@@ -112,10 +112,16 @@ variable "listeners" {
     protocol: optional(string, "HTTPS"),
     certificate_arn: optional(string),
     ssl_policy: optional(string, "ELBSecurityPolicy-2016-08"),
-    default_action: object({
+    default_actions: list(object({
       type: optional(string, "forward"),
-      target_group_key: optional(string)
-    })
+      target_group_key: optional(string),
+      authorization_endpoint: optional(string)
+      client_id: optional(string)
+      client_secret: optional(string)
+      issuer: optional(string)
+      token_endpoint: optional(string)
+      user_info_endpoint: optional(string)
+    }))
   }))
   nullable = false
   default = []

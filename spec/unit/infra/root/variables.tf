@@ -9,22 +9,23 @@ variable "idle_timeout" {
 }
 
 variable "expose_to_public_internet" {
+  type = bool
   default = null
 }
 
 variable "security_groups" {
   type = object({
     default: object({
-      associate: string,
-      ingress_rule: object({
-        include: string,
-        cidrs: list(string)
-      }),
+      associate: optional(bool),
+      ingress_rule: optional(object({
+        include: optional(bool),
+        cidrs: optional(list(string))
+      })),
       egress_rule: object({
-        include: string,
-        from_port: number,
-        to_port: number,
-        cidrs: list(string)
+        include: optional(bool),
+        from_port: optional(number),
+        to_port: optional(number),
+        cidrs: optional(list(string))
       }),
     })
   })
@@ -43,16 +44,16 @@ variable "target_groups" {
   type = list(object({
     key: string,
     port: string,
-    protocol: string,
-    target_type: string,
-    deregistration_delay: number,
+    protocol: optional(string),
+    target_type: optional(string),
+    deregistration_delay: optional(number),
     health_check: object({
-      path: string,
-      port: string,
-      protocol: string,
-      interval: number,
-      healthy_threshold: number,
-      unhealthy_threshold: number
+      path: optional(string),
+      port: optional(string),
+      protocol: optional(string),
+      interval: optional(number),
+      healthy_threshold: optional(number),
+      unhealthy_threshold: optional(number)
     })
   }))
   default = null
@@ -61,14 +62,20 @@ variable "target_groups" {
 variable "listeners" {
   type = list(object({
     key: string,
-    port: string,
-    protocol: string,
-    ssl_policy: string,
-    certificate_arn: string,
-    default_action: object({
-      type: string,
-      target_group_key: string
-    })
+    port: optional(string),
+    protocol: optional(string),
+    ssl_policy: optional(string),
+    certificate_arn: optional(string),
+    default_actions: list(object({
+      type: optional(string)
+      target_group_key: optional(string)
+      authorization_endpoint: optional(string)
+      client_id: optional(string)
+      client_secret: optional(string)
+      issuer: optional(string)
+      token_endpoint: optional(string)
+      user_info_endpoint: optional(string)
+    }))
   }))
   default = null
 }

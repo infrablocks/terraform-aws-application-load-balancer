@@ -152,12 +152,12 @@ describe 'security groups' do
       @listener1 = listener(
         key: 'first',
         port: 443,
-        default_action: default_action(target_group_key: 'first')
+        default_actions: [default_action(target_group_key: 'first')]
       )
       @listener2 = listener(
         key: 'second',
         port: 8443,
-        default_action: default_action(target_group_key: 'second')
+        default_actions: [default_action(target_group_key: 'second')]
       )
       @listeners = [@listener1, @listener2]
 
@@ -522,12 +522,12 @@ describe 'security groups' do
       @listener1 = listener(
         key: 'first',
         port: 443,
-        default_action: default_action(target_group_key: 'first')
+        default_actions: [default_action(target_group_key: 'first')]
       )
       @listener2 = listener(
         key: 'second',
         port: 8443,
-        default_action: default_action(target_group_key: 'second')
+        default_actions: [default_action(target_group_key: 'second')]
       )
       @listeners = [@listener1, @listener2]
 
@@ -723,7 +723,7 @@ describe 'security groups' do
       ssl_policy: 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06',
       certificate_arn:
         output(role: :prerequisites, name: 'certificate_arn'),
-      default_action:
+      default_actions: [default_action]
     }.merge(overrides)
   end
 

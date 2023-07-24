@@ -21,86 +21,232 @@ describe 'listeners' do
   end
 
   describe 'when one listener specified' do
-    before(:context) do
-      @key = 'default'
-      @port = 443
-      @protocol = 'HTTPS'
-      @ssl_policy = 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06'
-      @certificate_arn = output(role: :prerequisites, name: 'certificate_arn')
-      @default_action_type = 'forward'
-      @default_action_target_group_key = 'default'
+    describe 'by default' do
+      before(:context) do
+        @key = 'default'
+        @port = 443
+        @protocol = 'HTTPS'
+        @ssl_policy = 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06'
+        @certificate_arn = output(role: :prerequisites, name: 'certificate_arn')
+        @default_action_type = 'forward'
+        @default_action_target_group_key = 'default'
 
-      @plan = plan(role: :root) do |vars|
-        vars.listeners = [
-          {
-            key: @key,
-            port: @port,
-            protocol: @protocol,
-            ssl_policy: @ssl_policy,
-            certificate_arn: @certificate_arn,
-            default_action: {
-              type: @default_action_type,
-              target_group_key: @default_action_target_group_key
+        @plan = plan(role: :root) do |vars|
+          vars.listeners = [
+            {
+              key: @key,
+              port: @port,
+              protocol: @protocol,
+              ssl_policy: @ssl_policy,
+              certificate_arn: @certificate_arn,
+              default_actions: [{
+                type: @default_action_type,
+                target_group_key: @default_action_target_group_key
+              }]
             }
-          }
-        ]
-        vars.target_groups = [
-          {
-            key: 'default',
-            port: 80,
-            protocol: 'HTTP',
-            target_type: 'instance',
-            deregistration_delay: nil,
-            health_check:
-              {
-                path: '/health',
-                port: 'traffic-port',
-                protocol: 'HTTP',
-                interval: 30,
-                healthy_threshold: 5,
-                unhealthy_threshold: 5
-              }
-          }
-        ]
+          ]
+          vars.target_groups = [
+            {
+              key: 'default',
+              port: 80,
+              protocol: 'HTTP',
+              target_type: 'instance',
+              deregistration_delay: nil,
+              health_check:
+                {
+                  path: '/health',
+                  port: 'traffic-port',
+                  protocol: 'HTTP',
+                  interval: 30,
+                  healthy_threshold: 5,
+                  unhealthy_threshold: 5
+                }
+            }
+          ]
+        end
+      end
+
+      it 'creates a listener' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .once)
+      end
+
+      it 'uses the specified port' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(:port, @port))
+      end
+
+      it 'uses the specified protocol' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(:protocol, @protocol))
+      end
+
+      it 'uses the specified SSL policy' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(:ssl_policy, @ssl_policy))
+      end
+
+      it 'uses the specified certificate ARN' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(:certificate_arn, @certificate_arn))
+      end
+
+      it 'uses the specified default action type' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0, :type], @default_action_type
+                ))
       end
     end
 
-    it 'creates a listener' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .once)
-    end
+    describe 'when authenticate-oidc and forward default actions provided' do
+      before(:context) do
+        @forward_action_type = 'forward'
+        @forward_action_target_group_key = 'default'
 
-    it 'uses the specified port' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .with_attribute_value(:port, @port))
-    end
+        @authenticate_oidc_action_type = 'authenticate-oidc'
+        @authenticate_oidc_action_authorization_endpoint =
+          'https://example.com/authorization_endpoint'
+        @authenticate_oidc_action_client_id = 'client_id'
+        @authenticate_oidc_action_client_secret = 'client_secret'
+        @authenticate_oidc_action_issuer = 'https://example.com'
+        @authenticate_oidc_action_token_endpoint =
+          'https://example.com/token_endpoint'
+        @authenticate_oidc_action_user_info_endpoint =
+          'https://example.com/user_info_endpoint'
 
-    it 'uses the specified protocol' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .with_attribute_value(:protocol, @protocol))
-    end
+        @plan = plan(role: :root) do |vars|
+          vars.listeners = [
+            {
+              key: 'default',
+              port: 443,
+              protocol: 'HTTPS',
+              ssl_policy: 'ELBSecurityPolicy-TLS-1-2-Ext-2018-06',
+              certificate_arn:
+                output(role: :prerequisites, name: 'certificate_arn'),
+              default_actions: [
+                {
+                  type: @authenticate_oidc_action_type,
+                  authorization_endpoint:
+                    @authenticate_oidc_action_authorization_endpoint,
+                  client_id: @authenticate_oidc_action_client_id,
+                  client_secret: @authenticate_oidc_action_client_secret,
+                  issuer: @authenticate_oidc_action_issuer,
+                  token_endpoint: @authenticate_oidc_action_token_endpoint,
+                  user_info_endpoint:
+                    @authenticate_oidc_action_user_info_endpoint
+                },
+                {
+                  type: @forward_action_type,
+                  target_group_key: @forward_action_target_group_key
+                }
+              ]
+            }
+          ]
+          vars.target_groups = [
+            {
+              key: 'default',
+              port: 80,
+              protocol: 'HTTP',
+              target_type: 'instance',
+              deregistration_delay: nil,
+              health_check:
+                {
+                  path: '/health',
+                  port: 'traffic-port',
+                  protocol: 'HTTP',
+                  interval: 30,
+                  healthy_threshold: 5,
+                  unhealthy_threshold: 5
+                }
+            }
+          ]
+        end
+      end
 
-    it 'uses the specified SSL policy' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .with_attribute_value(:ssl_policy, @ssl_policy))
-    end
+      it 'includes default actions in the order provided' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0, :type], @authenticate_oidc_action_type
+                )
+                .with_attribute_value(
+                  [:default_action, 1, :type], @forward_action_type
+                ))
+      end
 
-    it 'uses the specified certificate ARN' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .with_attribute_value(:certificate_arn, @certificate_arn))
-    end
+      it 'uses the provided authenticate-oidc authorization endpoint' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :authorization_endpoint],
+                  @authenticate_oidc_action_authorization_endpoint
+                ))
+      end
 
-    it 'uses the specified default action type' do
-      expect(@plan)
-        .to(include_resource_creation(type: 'aws_lb_listener')
-              .with_attribute_value(
-                [:default_action, 0, :type], @default_action_type
-              ))
+      it 'uses the provided authenticate-oidc client ID' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :client_id],
+                  @authenticate_oidc_action_client_id
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc client secret',
+         pending: 'sensitive equality' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :client_secret],
+                  @authenticate_oidc_action_client_secret
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc issuer' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :issuer],
+                  @authenticate_oidc_action_issuer
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc token endpoint' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :token_endpoint],
+                  @authenticate_oidc_action_token_endpoint
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc user info endpoint' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :user_info_endpoint],
+                  @authenticate_oidc_action_user_info_endpoint
+                ))
+      end
     end
   end
 
@@ -128,10 +274,10 @@ describe 'listeners' do
         protocol: @protocol1,
         ssl_policy: @ssl_policy1,
         certificate_arn: @certificate_arn,
-        default_action: {
+        default_actions: [{
           type: @default_action_type1,
           target_group_key: @default_action_target_group_key1
-        }
+        }]
       }
       @listener2 = {
         key: @key2,
@@ -139,10 +285,10 @@ describe 'listeners' do
         protocol: @protocol2,
         ssl_policy: @ssl_policy2,
         certificate_arn: @certificate_arn,
-        default_action: {
+        default_actions: [{
           type: @default_action_type2,
           target_group_key: @default_action_target_group_key2
-        }
+        }]
       }
 
       @listeners = [@listener1, @listener2]
@@ -238,7 +384,8 @@ describe 'listeners' do
           .to(include_resource_creation(type: 'aws_lb_listener')
                 .with_attribute_value(:port, listener[:port])
                 .with_attribute_value(
-                  [:default_action, 0, :type], listener[:default_action][:type]
+                  [:default_action, 0,
+                   :type], listener[:default_actions][0][:type]
                 ))
       end
     end
@@ -255,10 +402,10 @@ describe 'listeners' do
             ssl_policy: nil,
             certificate_arn:
               output(role: :prerequisites, name: 'certificate_arn'),
-            default_action: {
+            default_actions: [{
               type: nil,
               target_group_key: 'default'
-            }
+            }]
           }
         ]
         vars.target_groups = [

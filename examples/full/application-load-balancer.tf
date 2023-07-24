@@ -17,10 +17,12 @@ module "application_load_balancer" {
       protocol : "HTTPS"
       ssl_policy : "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
       certificate_arn : module.acm_certificate.certificate_arn
-      default_action : {
-        type : "forward"
-        target_group_key : "default"
-      }
+      default_actions : [
+        {
+          type : "forward"
+          target_group_key : "default"
+        }
+      ]
     }
   ]
   target_groups = [
