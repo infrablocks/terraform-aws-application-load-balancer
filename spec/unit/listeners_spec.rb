@@ -203,15 +203,14 @@ describe 'listeners' do
                 ))
       end
 
-      it 'uses the provided authenticate-oidc client secret',
-         pending: 'sensitive equality' do
+      it 'uses the provided authenticate-oidc client secret' do
         expect(@plan)
           .to(include_resource_creation(type: 'aws_lb_listener')
                 .with_attribute_value(
                   [:default_action, 0,
                    :authenticate_oidc, 0,
                    :client_secret],
-                  @authenticate_oidc_action_client_secret
+                  matching(/^#{@authenticate_oidc_action_client_secret}$/)
                 ))
       end
 
