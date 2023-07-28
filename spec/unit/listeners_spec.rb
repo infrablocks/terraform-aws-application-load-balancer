@@ -121,6 +121,13 @@ describe 'listeners' do
         @authenticate_oidc_action_user_info_endpoint =
           'https://example.com/user_info_endpoint'
 
+        @oidc_action_authentication_request_extra_params =
+          { 'user_type' => 'example' }
+        @oidc_action_on_unauthenticated_request = 'authenticate'
+        @oidc_action_scope = 'admin support'
+        @oidc_action_session_cookie_name = 'some_random_cookie'
+        @oidc_action_session_timeout = 50_000
+
         @plan = plan(role: :root) do |vars|
           vars.listeners = [
             {
@@ -140,7 +147,14 @@ describe 'listeners' do
                   issuer: @authenticate_oidc_action_issuer,
                   token_endpoint: @authenticate_oidc_action_token_endpoint,
                   user_info_endpoint:
-                    @authenticate_oidc_action_user_info_endpoint
+                    @authenticate_oidc_action_user_info_endpoint,
+                  authentication_request_extra_params:
+                    @oidc_action_authentication_request_extra_params,
+                  on_unauthenticated_request:
+                    @oidc_action_on_unauthenticated_request,
+                  scope: @oidc_action_scope,
+                  session_cookie_name: @oidc_action_session_cookie_name,
+                  session_timeout: @oidc_action_session_timeout
                 },
                 {
                   type: @forward_action_type,
@@ -244,6 +258,61 @@ describe 'listeners' do
                    :authenticate_oidc, 0,
                    :user_info_endpoint],
                   @authenticate_oidc_action_user_info_endpoint
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc extra params' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :authentication_request_extra_params],
+                  @oidc_action_authentication_request_extra_params
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc on unauthenticated request' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :on_unauthenticated_request],
+                  @oidc_action_on_unauthenticated_request
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc scope' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :scope],
+                  @oidc_action_scope
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc session cookie name' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :session_cookie_name],
+                  @oidc_action_session_cookie_name
+                ))
+      end
+
+      it 'uses the provided authenticate-oidc session timeout' do
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_listener')
+                .with_attribute_value(
+                  [:default_action, 0,
+                   :authenticate_oidc, 0,
+                   :session_timeout],
+                  @oidc_action_session_timeout
                 ))
       end
     end

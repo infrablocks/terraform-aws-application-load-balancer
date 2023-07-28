@@ -75,6 +75,11 @@ variable "listeners" {
       issuer: optional(string)
       token_endpoint: optional(string)
       user_info_endpoint: optional(string)
+      authentication_request_extra_params: optional(map(string))
+      on_unauthenticated_request: optional(string)
+      scope: optional(string)
+      session_cookie_name: optional(string)
+      session_timeout: optional(number)
     }))
   }))
   default = null
