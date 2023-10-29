@@ -23,11 +23,19 @@ function loose_version() {
   echo "${version_parts[0]}.${version_parts[1]}"
 }
 
-ruby_full_version="$(cat "$project_dir"/.ruby-version)"
+function read_version() {
+  local tool="$1"
+  local tool_versions
+
+  tool_versions="$(cat "$project_dir"/.tool-versions)"
+
+  echo "$tool_versions" | grep "$tool" | cut -d ' ' -f 2
+}
+
+ruby_full_version="$(read_version "ruby")"
 ruby_loose_version="$(loose_version "$ruby_full_version")"
 
 if [[ "$skip_checks" == "no" ]]; then
-echo "Checking for system dependencies."
   if ! type ruby >/dev/null 2>&1 || ! ruby -v | grep -q "$ruby_loose_version"; then
     echo "This codebase requires Ruby $ruby_loose_version."
     missing_dependency="yes"
@@ -41,9 +49,9 @@ echo "Checking for system dependencies."
   echo "All system dependencies present. Continuing."
 fi
 
-if [[ "$offline" == "no" ]]; then
+if [[ "$offline" = "no" ]]; then
   echo "Installing ruby dependencies."
-  if [[ "$verbose" == "yes" ]]; then
+  if [[ "$verbose" = "yes" ]]; then
     bundle install
   else
     bundle install >/dev/null
@@ -51,7 +59,7 @@ if [[ "$offline" == "no" ]]; then
 fi
 
 echo "Starting rake."
-if [[ "$verbose" == "yes" ]]; then
+if [[ "$verbose" = "yes" ]]; then
   time bundle exec rake --verbose "$@"
 else
   time bundle exec rake "$@"
