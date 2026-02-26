@@ -48,6 +48,12 @@ describe 'ALB' do
               .with_attribute_value(:idle_timeout, 60))
     end
 
+    it 'does not set a name on the load balancer' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb')
+              .with_attribute_value(:name, a_nil_value))
+    end
+
     it 'adds tags to the load balancer' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb')
@@ -93,6 +99,20 @@ describe 'ALB' do
     it 'outputs the load balancer DNS name' do
       expect(@plan)
         .to(include_output_creation(name: 'dns_name'))
+    end
+  end
+
+  describe 'when name is provided' do
+    before(:context) do
+      @plan = plan(role: :root) do |vars|
+        vars.name = 'custom-alb-name'
+      end
+    end
+
+    it 'uses the provided name' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb')
+              .with_attribute_value(:name, 'custom-alb-name'))
     end
   end
 

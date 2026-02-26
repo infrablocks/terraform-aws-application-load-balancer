@@ -1,4 +1,5 @@
 resource "aws_lb" "load_balancer" {
+  name               = var.name
   load_balancer_type = "application"
 
   subnets = var.subnet_ids

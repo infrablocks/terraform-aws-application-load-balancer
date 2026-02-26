@@ -44,6 +44,12 @@ describe 'target group' do
               .once)
     end
 
+    it 'does not set a name on the target group' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value(:name, a_nil_value))
+    end
+
     it 'uses the provided VPC ID' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb_target_group')
@@ -148,6 +154,21 @@ describe 'target group' do
     it 'outputs the target groups' do
       expect(@plan)
         .to(include_output_creation(name: 'target_groups'))
+    end
+  end
+
+  describe 'when target group has a name' do
+    before(:context) do
+      @target_group = target_group(name: 'custom-tg-name')
+      @plan = plan(role: :root) do |vars|
+        vars.target_groups = [@target_group]
+      end
+    end
+
+    it 'uses the provided name' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value(:name, 'custom-tg-name'))
     end
   end
 
