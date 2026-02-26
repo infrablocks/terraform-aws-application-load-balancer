@@ -1,5 +1,10 @@
 variable "region" {}
 
+variable "name" {
+  type    = string
+  default = null
+}
+
 variable "component" {}
 variable "deployment_identifier" {}
 
@@ -43,6 +48,7 @@ variable "dns" {
 variable "target_groups" {
   type = list(object({
     key: string,
+    name: optional(string),
     port: string,
     protocol: optional(string),
     target_type: optional(string),

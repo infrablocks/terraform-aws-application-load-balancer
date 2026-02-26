@@ -1,3 +1,9 @@
+variable "name" {
+  description = "Custom name for the load balancer. If not provided, AWS will auto-generate a name."
+  type        = string
+  default     = null
+}
+
 variable "region" {
   description = "The region into which to deploy the load balancer."
   type        = string
@@ -87,6 +93,7 @@ variable "target_groups" {
   description = "Details of target groups to create."
   type        = list(object({
     key : string,
+    name : optional(string),
     port : string,
     protocol : optional(string, "HTTP"),
     target_type : optional(string, "instance"),

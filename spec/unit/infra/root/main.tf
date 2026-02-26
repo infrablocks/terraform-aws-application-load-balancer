@@ -13,6 +13,8 @@ module "application_load_balancer" {
   vpc_id = data.terraform_remote_state.prerequisites.outputs.vpc_id
   subnet_ids = data.terraform_remote_state.prerequisites.outputs.subnet_ids
 
+  name = var.name
+
   component = var.component
   deployment_identifier = var.deployment_identifier
 

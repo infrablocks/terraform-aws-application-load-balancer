@@ -3,6 +3,7 @@ resource "aws_lb_target_group" "target_group" {
     for target_group in var.target_groups : target_group.key => target_group
   }
 
+  name   = each.value.name
   vpc_id = var.vpc_id
 
   port = each.value.port
