@@ -103,6 +103,7 @@ variable "target_groups" {
       port : optional(string, "traffic-port"),
       protocol : optional(string, "HTTP"),
       interval : optional(number, 30),
+      timeout : optional(number, 5),
       healthy_threshold : optional(number, 3),
       unhealthy_threshold : optional(number, 3)
     }), {})
