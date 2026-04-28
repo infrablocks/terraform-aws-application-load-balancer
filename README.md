@@ -84,6 +84,7 @@ module "application_load_balancer" {
   health_check_target              = 'HTTPS:443/ping'
   health_check_timeout             = 10
   health_check_interval            = 30
+  health_check_timeout             = 5
   health_check_unhealthy_threshold = 5
   health_check_healthy_threshold   = 5
 

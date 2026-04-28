@@ -18,6 +18,7 @@ resource "aws_lb_target_group" "target_group" {
     port = each.value.health_check.port
     protocol = each.value.health_check.protocol
     interval = each.value.health_check.interval
+    timeout = each.value.health_check.timeout
     healthy_threshold = each.value.health_check.healthy_threshold
     unhealthy_threshold = each.value.health_check.unhealthy_threshold
   }

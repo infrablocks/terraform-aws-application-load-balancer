@@ -751,6 +751,7 @@ describe 'security groups' do
       port: 'traffic-port',
       protocol: 'HTTP',
       interval: 30,
+      timeout: 5,
       healthy_threshold: 5,
       unhealthy_threshold: 5
     }.merge(overrides)

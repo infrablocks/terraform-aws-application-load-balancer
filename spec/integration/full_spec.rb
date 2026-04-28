@@ -252,6 +252,10 @@ describe 'full' do
       its(:health_check_interval_seconds) do
         is_expected.to(eq(30))
       end
+
+      its(:health_check_timeout_seconds) do
+        is_expected.to(eq(5))
+      end
     end
 
     describe 'tags' do

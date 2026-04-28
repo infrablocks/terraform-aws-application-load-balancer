@@ -58,6 +58,7 @@ variable "target_groups" {
       port: optional(string),
       protocol: optional(string),
       interval: optional(number),
+      timeout: optional(number),
       healthy_threshold: optional(number),
       unhealthy_threshold: optional(number)
     })

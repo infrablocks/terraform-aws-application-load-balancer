@@ -116,6 +116,15 @@ describe 'target group' do
               ))
     end
 
+    it 'uses the provided health check timeout' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value(
+                [:health_check, 0, :timeout],
+                @target_group[:health_check][:timeout]
+              ))
+    end
+
     it 'uses the provided health check healthy threshold' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb_target_group')
@@ -185,6 +194,7 @@ describe 'target group' do
           port: 'traffic-port',
           protocol: 'HTTP',
           interval: 30,
+          timeout: 5,
           healthy_threshold: 5,
           unhealthy_threshold: 5
         )
@@ -200,6 +210,7 @@ describe 'target group' do
           port: '8443',
           protocol: 'HTTPS',
           interval: 45,
+          timeout: 10,
           healthy_threshold: 3,
           unhealthy_threshold: 3
         )
@@ -315,6 +326,18 @@ describe 'target group' do
       end
     end
 
+    it 'uses the provided health check timeout' do
+      @target_groups.each do |target_group|
+        expect(@plan)
+          .to(include_resource_creation(type: 'aws_lb_target_group')
+                .with_attribute_value(:port, target_group[:port])
+                .with_attribute_value(
+                  [:health_check, 0, :timeout],
+                  target_group[:health_check][:timeout]
+                ))
+      end
+    end
+
     it 'uses the provided health check healthy threshold' do
       @target_groups.each do |target_group|
         expect(@plan)
@@ -378,6 +401,7 @@ describe 'target group' do
           port: nil,
           protocol: nil,
           interval: nil,
+          timeout: nil,
           healthy_threshold: nil,
           unhealthy_threshold: nil
         }
@@ -441,6 +465,12 @@ describe 'target group' do
               .with_attribute_value([:health_check, 0, :interval], 30))
     end
 
+    it 'uses 5s for the health check timeout' do
+      expect(@plan)
+        .to(include_resource_creation(type: 'aws_lb_target_group')
+              .with_attribute_value([:health_check, 0, :timeout], 5))
+    end
+
     it 'uses 3 for the health check healthy threshold' do
       expect(@plan)
         .to(include_resource_creation(type: 'aws_lb_target_group')
@@ -473,6 +503,7 @@ describe 'target group' do
       port: 'traffic-port',
       protocol: 'HTTP',
       interval: 30,
+      timeout: 5,
       healthy_threshold: 5,
       unhealthy_threshold: 5
     }.merge(overrides)

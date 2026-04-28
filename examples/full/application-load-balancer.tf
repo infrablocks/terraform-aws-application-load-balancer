@@ -37,6 +37,7 @@ module "application_load_balancer" {
         port : 80
         protocol : "HTTP"
         interval : 30
+        timeout : 5
         healthy_threshold : 3
         unhealthy_threshold : 3
       }
