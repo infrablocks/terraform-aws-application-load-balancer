@@ -9,6 +9,15 @@ resource "aws_lb" "load_balancer" {
 
   idle_timeout = var.idle_timeout
 
+  dynamic "access_logs" {
+    for_each = var.access_logs.enabled ? [var.access_logs] : []
+    content {
+      enabled = true
+      bucket  = access_logs.value.bucket
+      prefix  = access_logs.value.prefix
+    }
+  }
+
   tags = {
     Name = "${var.component}-${var.deployment_identifier}"
     Component = var.component

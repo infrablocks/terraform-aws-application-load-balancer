@@ -139,3 +139,14 @@ variable "listeners" {
   nullable = false
   default  = []
 }
+
+variable "access_logs" {
+  description = "Access logging configuration for the ALB."
+  type = object({
+    enabled : optional(bool, false),
+    bucket : optional(string),
+    prefix : optional(string),
+  })
+  nullable = false
+  default  = {}
+}

@@ -25,6 +25,7 @@ module "application_load_balancer" {
   security_groups = var.security_groups
 
   dns = var.dns
+  access_logs = var.access_logs
 
   target_groups = var.target_groups
   listeners = var.listeners
