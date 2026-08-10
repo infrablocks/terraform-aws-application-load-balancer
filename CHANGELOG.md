@@ -1,5 +1,9 @@
 ## Unreleased
 
+IMPROVEMENTS:
+
+* Access logging can now be enabled via the new `access_logs` variable
+
 ## 4.0.0 (Dec 28th, 2022)
 
 IMPROVEMENTS:
