@@ -8,7 +8,8 @@ IMPROVEMENTS:
 BACKWARDS INCOMPATIBILITIES / NOTES:
 
 * The AWS provider must now be v5.89 or higher, the first version supporting
-  zonal shift on Application Load Balancers.
+  zonal shift on Application Load Balancers. Support for v3, v4 and v5 below
+  5.89 is dropped.
 
 ## 4.0.0 (Dec 28th, 2022)
 

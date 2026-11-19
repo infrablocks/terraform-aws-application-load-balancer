@@ -68,6 +68,16 @@ describe 'full' do
         .to(eq(load_balancer.dns_name))
     end
 
+    it 'enables zonal shift' do
+      attributes =
+        elbv2_client
+        .describe_load_balancer_attributes(load_balancer_arn: arn)
+        .attributes
+        .to_h { |attribute| [attribute.key, attribute.value] }
+
+      expect(attributes['zonal_shift.config.enabled']).to(eq('true'))
+    end
+
     describe 'tags' do
       subject(:tags) do
         elbv2_client

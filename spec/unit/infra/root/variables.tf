@@ -15,7 +15,7 @@ variable "idle_timeout" {
 
 variable "enable_zonal_shift" {
   type = bool
-  default = false
+  default = null
 }
 
 variable "expose_to_public_internet" {
