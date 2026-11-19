@@ -3,6 +3,12 @@
 IMPROVEMENTS:
 
 * Access logging can now be enabled via the new `access_logs` variable
+* Zonal shift can now be enabled via the new `enable_zonal_shift` variable
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+* The AWS provider must now be v5.89 or higher, the first version supporting
+  zonal shift on Application Load Balancers.
 
 ## 4.0.0 (Dec 28th, 2022)
 
