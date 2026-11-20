@@ -150,3 +150,10 @@ variable "access_logs" {
   nullable = false
   default  = {}
 }
+
+variable "enable_zonal_shift" {
+  description = "Whether to enable zonal shift on the load balancer, which allows Amazon Application Recovery Controller to shift traffic away from an impaired Availability Zone."
+  type        = bool
+  nullable    = false
+  default     = false
+}

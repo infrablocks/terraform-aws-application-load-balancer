@@ -9,6 +9,7 @@ module "application_load_balancer" {
   deployment_identifier = var.deployment_identifier
 
   expose_to_public_internet = true
+  enable_zonal_shift        = true
 
   listeners = [
     {

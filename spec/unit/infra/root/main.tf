@@ -19,6 +19,7 @@ module "application_load_balancer" {
   deployment_identifier = var.deployment_identifier
 
   idle_timeout = var.idle_timeout
+  enable_zonal_shift = var.enable_zonal_shift
 
   expose_to_public_internet = var.expose_to_public_internet
 

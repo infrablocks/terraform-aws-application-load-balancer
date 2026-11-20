@@ -9,6 +9,8 @@ resource "aws_lb" "load_balancer" {
 
   idle_timeout = var.idle_timeout
 
+  enable_zonal_shift = var.enable_zonal_shift
+
   dynamic "access_logs" {
     for_each = var.access_logs.enabled ? [var.access_logs] : []
     content {
